@@ -1,0 +1,16 @@
+{
+  "name": "JUPEB Orbit Admin",
+  "short_name": "Orbit Admin",
+  "description": "Admin Portal for JUPEB Orbit.",
+  "start_url": "/admin/index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2546eb",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

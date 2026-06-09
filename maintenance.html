@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Maintenance | JUPEB Orbit Admin</title>
+    <link rel="manifest" href="/manifest.json">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { 50: '#f0f4ff', 100: '#e0e7ff', 600: '#2546eb', 700: '#1d35d8' },
+                        slate: { 50: '#F8FAFC', 100: '#F1F5F9', 200: '#E2E8F0', 900: '#0F172A' }
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Plus Jakarta Sans', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #F8FAFC; font-family: 'Inter', sans-serif; }
+        .sidebar-item-active { background: #EEF2FF; color: #2546eb; }
+        .console-log { font-family: 'JetBrains Mono', 'Fira Code', monospace; scrollbar-width: thin; }
+    </style>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900 antialiased">
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden flex items-center justify-between p-4 bg-white border-b border-slate-200 sticky top-0 z-40">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center text-white font-display font-black italic text-xs">A</div>
+            <span class="font-display font-black text-slate-900 tracking-tight text-sm">Orbit Admin</span>
+        </div>
+        <button id="mobile-menu-btn" class="p-2 text-slate-600 hover:bg-slate-100 rounded-xl transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-slate-100 p-8 flex flex-col shrink-0 transform -translate-x-full transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0">
+            <div class="flex items-center gap-3 mb-12 px-2">
+                <div class="w-10 h-10 bg-brand-600 rounded-2xl flex items-center justify-center text-white font-display font-black italic text-xl shadow-lg shadow-brand-100">A</div>
+                <div class="flex flex-col">
+                    <span class="font-display font-black text-slate-900 tracking-tight leading-none text-lg">Orbit</span>
+                    <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">Admin Control</span>
+                </div>
+            </div>
+            
+            <nav class="space-y-1.5 flex-1">
+                <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3.5 text-slate-500 hover:bg-slate-50 rounded-2xl font-bold text-sm transition-all group">
+                    <svg class="w-5 h-5 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                    Dashboard
+                </a>
+                <a href="questions.html" class="flex items-center gap-3 px-4 py-3.5 text-slate-500 hover:bg-slate-50 rounded-2xl font-bold text-sm transition-all group">
+                    <svg class="w-5 h-5 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                    Question Bank
+                </a>
+                <a href="uploader.html" class="flex items-center gap-3 px-4 py-3.5 text-slate-500 hover:bg-slate-50 rounded-2xl font-bold text-sm transition-all group">
+                    <svg class="w-5 h-5 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                    Batch Uploader
+                </a>
+                <a href="users.html" class="flex items-center gap-3 px-4 py-3.5 text-slate-500 hover:bg-slate-50 rounded-2xl font-bold text-sm transition-all group">
+                    <svg class="w-5 h-5 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    Candidate Analytics
+                </a>
+                <a href="exam-config.html" class="flex items-center gap-3 px-4 py-3.5 text-slate-500 hover:bg-slate-50 rounded-2xl font-bold text-sm transition-all group">
+                    <svg class="w-5 h-5 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    Exam Configuration
+                </a>
+                <a href="maintenance.html" class="sidebar-item-active flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold text-sm transition-all group">
+                    <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    System Maintenance
+                </a>
+            </nav>
+
+            <div class="pt-8 border-t border-slate-100">
+                <button onclick="handleLogout()" class="w-full flex items-center gap-3 px-4 py-3.5 text-rose-500 hover:bg-rose-50 rounded-2xl font-bold text-sm transition-all group">
+                    <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                    Logout Session
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main -->
+        <main class="flex-1 p-6 lg:p-12 w-full overflow-x-hidden">
+            <header class="mb-12">
+                <h1 class="font-display text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">System Integrity</h1>
+                <p class="text-sm font-bold text-slate-400 mt-1 uppercase tracking-widest">Global diagnostic tools & data health monitors</p>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-12">
+                <!-- Weakness Monitor -->
+                <div class="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-sm flex flex-col h-full relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-10 opacity-[0.03] pointer-events-none">
+                        <svg class="w-48 h-48" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                    </div>
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-3 mb-8">
+                            <div class="w-10 h-10 bg-brand-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-brand-100">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                            </div>
+                            <h2 class="text-xl font-black text-slate-900">Weakness Queue</h2>
+                        </div>
+                        <p class="text-xs text-slate-400 font-bold leading-relaxed mb-10 uppercase tracking-widest">Critical topics identified across total student population</p>
+                        <div id="weakness-list" class="space-y-4">
+                            <div class="animate-pulse space-y-4">
+                                <div class="h-16 bg-slate-50 rounded-2xl"></div>
+                                <div class="h-16 bg-slate-50 rounded-2xl"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Integrity Scanner -->
+                <div class="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-sm flex flex-col h-full">
+                    <div class="flex items-center gap-3 mb-8">
+                        <div class="w-10 h-10 bg-amber-500 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-amber-100">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                        </div>
+                        <h2 class="text-xl font-black text-slate-900">Data Integrity Checker</h2>
+                    </div>
+                    <p class="text-xs text-slate-400 font-bold leading-relaxed mb-10 uppercase tracking-widest">Execute heuristic scan for corrupted question logic</p>
+                    
+                    <div id="scan-results" class="hidden mb-8 p-6 bg-slate-900 rounded-[2rem] border-none text-[10px] text-emerald-400 font-mono console-log max-h-60 overflow-y-auto shadow-2xl"></div>
+
+                    <button id="scan-btn" onclick="runIntegrityScan()" class="mt-auto w-full py-5 bg-slate-900 text-white rounded-2xl font-black text-sm hover:bg-brand-600 transition-all shadow-xl active:scale-95">
+                        Initialize Full Database Audit
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-sm">
+                <h2 class="text-lg font-black text-slate-900 mb-8">Cloud Orchestration Tools</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    <button onclick="alert('Maintenance block: Contact DevOps.')" class="p-6 bg-slate-50 border border-slate-100 rounded-[2rem] hover:border-brand-200 transition-all text-left group">
+                        <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center mb-4 shadow-sm group-hover:scale-110 transition-transform text-brand-600">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                        </div>
+                        <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Recalculation</div>
+                        <div class="text-sm font-black text-slate-900 leading-tight">Sync Global Scores</div>
+                    </button>
+                    <button onclick="alert('Maintenance block: Contact DevOps.')" class="p-6 bg-slate-50 border border-slate-100 rounded-[2rem] hover:border-brand-200 transition-all text-left group">
+                        <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center mb-4 shadow-sm group-hover:scale-110 transition-transform text-amber-500">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h10"></path></svg>
+                        </div>
+                        <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Garbage Collection</div>
+                        <div class="text-sm font-black text-slate-900 leading-tight">Purge Stale History</div>
+                    </button>
+                    <button onclick="alert('Maintenance block: Contact DevOps.')" class="p-6 bg-slate-50 border border-slate-100 rounded-[2rem] hover:border-brand-200 transition-all text-left group">
+                        <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center mb-4 shadow-sm group-hover:scale-110 transition-transform text-rose-500">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                        </div>
+                        <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Content Repair</div>
+                        <div class="text-sm font-black text-slate-900 leading-tight">Auto-Fix Formatting</div>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        function toggleSidebar() { sidebar.classList.toggle('-translate-x-full'); overlay.classList.toggle('hidden'); document.body.classList.toggle('overflow-hidden'); }
+        mobileMenuBtn?.addEventListener('click', toggleSidebar);
+        overlay?.addEventListener('click', toggleSidebar);
+    </script>
+
+    <script type="module">
+        import { db, auth } from "./firebase-config.js";
+        import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+        import { collection, getDocs, collectionGroup } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+        onAuthStateChanged(auth, (user) => {
+            if (!user || !user.email.endsWith("@admin.orbit.com")) window.location.href = "index.html";
+            else loadWeaknessAnalytics();
+        });
+
+        window.handleLogout = async () => { await signOut(auth); window.location.href = "index.html"; };
+
+        async function loadWeaknessAnalytics() {
+            const list = document.getElementById('weakness-list');
+            try {
+                const snap = await getDocs(collectionGroup(db, "weaknessBucket"));
+                const topics = {};
+                snap.forEach(doc => { const t = doc.data().topic || "General"; topics[t] = (topics[t] || 0) + 1; });
+                const sorted = Object.entries(topics).sort((a,b) => b[1] - a[1]).slice(0, 5);
+                
+                list.innerHTML = sorted.length ? sorted.map(([name, count]) => `
+                    <div class="flex items-center justify-between p-5 bg-slate-50 rounded-2xl border border-slate-100 hover:border-brand-200 transition-colors">
+                        <div class="flex flex-col">
+                            <span class="text-sm font-black text-slate-800 leading-tight">${name}</span>
+                            <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">High Struggle Topic</span>
+                        </div>
+                        <div class="px-4 py-2 bg-white rounded-xl shadow-sm border border-slate-100 text-[10px] font-black text-brand-600">
+                            ${count} STUDENTS
+                        </div>
+                    </div>
+                `).join('') : '<div class="py-12 text-center text-slate-300 italic">No global failure patterns detected.</div>';
+            } catch (e) { list.innerHTML = `<div class="p-6 bg-rose-50 text-rose-600 rounded-2xl font-bold text-xs">${e.message}</div>`; }
+        }
+
+        window.runIntegrityScan = async function() {
+            const btn = document.getElementById('scan-btn');
+            const res = document.getElementById('scan-results');
+            btn.disabled = true; btn.innerText = "Audit in progress...";
+            res.classList.remove('hidden'); res.innerHTML = "SYSTEM AUDIT INITIALIZED...\n\n";
+
+            try {
+                const qSnap = await getDocs(collectionGroup(db, "questions"));
+                let corrupted = 0;
+                qSnap.forEach(doc => {
+                    const q = doc.data();
+                    const raw = JSON.stringify(q);
+                    if (raw.includes('"A "A. "At "B. "C.')) {
+                        res.innerHTML += `<span class="text-rose-500">[CORRUPT] ID: ${doc.id} - Logic Block Failure</span>\n`;
+                        corrupted++;
+                    }
+                    if (!q.questionText || (q.options || []).length < 4) {
+                        res.innerHTML += `<span class="text-amber-500">[INCOMPLETE] ID: ${doc.id} - Schema Violation</span>\n`;
+                        corrupted++;
+                    }
+                });
+                res.innerHTML += `\nAUDit COMPLETE. ${qSnap.size} records checked. ${corrupted} flags raised.`;
+            } catch (e) { res.innerHTML += `[CRITICAL ERROR] Audit failed: ${e.message}`; }
+            
+            btn.innerText = "Audit Finished";
+            setTimeout(() => { btn.disabled = false; btn.innerText = "Initialize Full Database Audit"; }, 5000);
+        }
+    </script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js');
+            });
+        }
+    </script>
+</body>
+</html>

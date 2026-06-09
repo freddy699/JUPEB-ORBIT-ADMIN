@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal | JUPEB Orbit</title>
+    <link rel="manifest" href="/manifest.json">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { 50: '#f0f4ff', 100: '#e0e7ff', 600: '#2546eb', 700: '#1d35d8' },
+                        slate: { 50: '#F8FAFC', 900: '#0F172A' }
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Plus Jakarta Sans', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background: radial-gradient(circle at top right, #f0f4ff, #f8fafc); }
+        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.3); }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-6 antialiased text-slate-900">
+
+    <div class="max-w-md w-full animate-in fade-in zoom-in duration-500">
+        <div class="text-center mb-10">
+            <div class="w-20 h-20 bg-brand-600 rounded-[2rem] flex items-center justify-center mx-auto mb-6 shadow-2xl shadow-brand-200 transform -rotate-6 hover:rotate-0 transition-transform duration-500">
+                <span class="text-white font-display font-black italic text-3xl">A</span>
+            </div>
+            <h1 class="text-4xl font-display font-black tracking-tight mb-2">Orbit Admin</h1>
+            <p class="text-slate-400 font-bold text-xs uppercase tracking-[0.2em]">Restricted Management Access</p>
+        </div>
+
+        <div class="glass rounded-[3rem] p-10 shadow-xl shadow-brand-100/50 border border-white">
+            <form id="login-form" class="space-y-6">
+                <div>
+                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Email Address</label>
+                    <input type="email" id="email" required placeholder="admin@orbit.com" class="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 text-sm font-bold focus:ring-2 focus:ring-brand-500 outline-none transition-all">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Secure Password</label>
+                    <input type="password" id="password" required placeholder="••••••••" class="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-4 text-sm font-bold focus:ring-2 focus:ring-brand-500 outline-none transition-all">
+                </div>
+                <button type="submit" id="btn-text" class="w-full py-5 bg-slate-900 hover:bg-brand-600 text-white rounded-2xl font-black text-sm shadow-xl transition-all active:scale-95">
+                    Authorize & Sign In
+                </button>
+            </form>
+        </div>
+
+        <p class="mt-8 text-center text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-loose">
+            Enterprise Security Protocol Active<br>
+            All connection attempts are logged
+        </p>
+    </div>
+
+    <script type="module">
+        import { auth } from "./firebase-config.js";
+        import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+
+        const form = document.getElementById('login-form');
+        const btn = document.getElementById('btn-text');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (!email.endsWith("@admin.orbit.com")) {
+                alert("Access Denied: Use an authorized admin email.");
+                return;
+            }
+
+            btn.innerText = "Authorizing...";
+            btn.disabled = true;
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                window.location.href = "dashboard.html";
+            } catch (error) {
+                alert("Authentication Failed: " + error.message);
+                btn.innerText = "Authorize & Sign In";
+                btn.disabled = false;
+            }
+        });
+    </script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js');
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candidate Analytics | JUPEB Orbit Admin</title>
+    <link rel="manifest" href="/manifest.json">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { 50: '#f0f4ff', 100: '#e0e7ff', 600: '#2546eb', 700: '#1d35d8' },
+                        slate: { 50: '#F8FAFC', 100: '#F1F5F9', 200: '#E2E8F0', 900: '#0F172A' }
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Plus Jakarta Sans', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #F8FAFC; font-family: 'Inter', sans-serif; }
+        .sidebar-item-active { background: #EEF2FF; color: #2546eb; }
+        .glass-modal { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); }
+        .user-row { transition: all 0.2s; }
+        .user-row:hover { background-color: #F1F5F9; transform: scale(1.002); }
+    </style>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900 antialiased">
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden flex items-center justify-between p-4 bg-white border-b border-slate-200 sticky top-0 z-40">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center text-white font-display font-black italic text-xs">A</div>
+            <span class="font-display font-black text-slate-900 tracking-tight text-sm">Orbit Admin</span>
+        </div>
+        <button id="mobile-menu-btn" class="p-2 text-slate-600 hover:bg-slate-100 rounded-xl transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-slate-100 p-8 flex flex-col shrink-0 transform -translate-x-full transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0">
+            <div class="flex items-center gap-3 mb-12 px-2">
+                <div class="w-10 h-10 bg-brand-600 rounded-2xl flex items-center justify-center text-white font-display font-black italic text-xl shadow-lg shadow-brand-100">A</div>
+                <div class="flex flex-col">
+                    <span class="font-display font-black text-slate-900 tracking-tight leading-none text-lg">Orbit</span>
+                    <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">Admin Control</span>
+                </div>
+            </div>
+            
+            <nav class="space-y-1.5 flex-1">
+                <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3.5 text-slate-500 hover:bg-slate-50 rounded-2xl font-bold text-sm transition-all group">
+                    <svg class="w-5 h-5 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                    Dashboard
+                </a>
+                <a href="questions.html" class="flex items-center gap-3 px-4 py-3.5 text-slate-500 hover:bg-slate-50 rounded-2xl font-bold text-sm transition-all group">
+                    <svg class="w-5 h-5 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                    Question Bank
+                </a>
+                <a href="uploader.html" class="flex items-center gap-3 px-4 py-3.5 text-slate-500 hover:bg-slate-50 rounded-2xl font-bold text-sm transition-all group">
+                    <svg class="w-5 h-5 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                    Batch Uploader
+                </a>
+                <a href="users.html" class="sidebar-item-active flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold text-sm transition-all group">
+                    <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    Candidate Analytics
+                </a>
+                <a href="exam-config.html" class="flex items-center gap-3 px-4 py-3.5 text-slate-500 hover:bg-slate-50 rounded-2xl font-bold text-sm transition-all group">
+                    <svg class="w-5 h-5 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    Exam Configuration
+                </a>
+                <a href="maintenance.html" class="flex items-center gap-3 px-4 py-3.5 text-slate-500 hover:bg-slate-50 rounded-2xl font-bold text-sm transition-all group">
+                    <svg class="w-5 h-5 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    System Maintenance
+                </a>
+            </nav>
+
+            <div class="pt-8 border-t border-slate-100">
+                <button onclick="handleLogout()" class="w-full flex items-center gap-3 px-4 py-3.5 text-rose-500 hover:bg-rose-50 rounded-2xl font-bold text-sm transition-all group">
+                    <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                    Logout Session
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main -->
+        <main class="flex-1 p-6 lg:p-12 w-full overflow-x-hidden">
+            <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-12">
+                <div>
+                    <h1 class="font-display text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">Candidate Intelligence</h1>
+                    <p class="text-sm font-bold text-slate-400 mt-1 uppercase tracking-widest">Real-time performance monitoring & profiles</p>
+                </div>
+                <div class="relative w-full sm:w-80">
+                    <input type="text" id="user-search" oninput="handleSearch()" placeholder="Search candidates by name or email..." class="w-full bg-white border border-slate-100 rounded-2xl pl-12 pr-4 py-4 text-sm font-medium outline-none focus:ring-2 focus:ring-brand-500 shadow-sm transition-all">
+                    <svg class="w-5 h-5 text-slate-400 absolute left-4 top-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </div>
+            </header>
+
+            <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left min-w-[900px]">
+                        <thead>
+                            <tr class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] border-b border-slate-50">
+                                <th class="px-8 py-6">Candidate</th>
+                                <th class="px-8 py-6">Combination</th>
+                                <th class="px-8 py-6 text-center">Mastery Score</th>
+                                <th class="px-8 py-6 text-right">Management</th>
+                            </tr>
+                        </thead>
+                        <tbody id="user-list" class="divide-y divide-slate-50">
+                            <tr><td colspan="4" class="py-32 text-center text-sm font-bold text-slate-400 animate-pulse">Syncing Cloud Profiles...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="user-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-[3.5rem] p-12 max-w-5xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-white relative">
+            <button onclick="closeModal()" class="absolute top-8 right-8 p-3 text-slate-400 hover:text-slate-900 bg-slate-50 rounded-2xl transition-all">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+
+            <div class="flex flex-col md:flex-row gap-8 items-start mb-12">
+                <div id="modal-avatar" class="w-24 h-24 bg-brand-50 rounded-[2rem] flex items-center justify-center text-4xl shadow-inner">👤</div>
+                <div class="flex-1">
+                    <h2 id="modal-name" class="text-4xl font-display font-black text-slate-900 tracking-tight leading-tight">--</h2>
+                    <p id="modal-email" class="text-slate-400 font-bold text-sm tracking-wide">--</p>
+                    <div id="modal-tags" class="flex flex-wrap gap-2 mt-4"></div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div class="p-8 bg-brand-600 rounded-[2.5rem] text-white shadow-xl shadow-brand-100">
+                    <span class="text-[10px] font-black text-brand-100 uppercase tracking-widest">Aggregate Mastery</span>
+                    <div id="modal-score" class="text-5xl font-black mt-2 tracking-tighter">--</div>
+                    <div class="mt-4 text-xs font-bold text-brand-200">Across all subjects</div>
+                </div>
+                <div class="p-8 bg-slate-50 rounded-[2.5rem] border border-slate-100">
+                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Simulation History</span>
+                    <div id="modal-exams-count" class="text-5xl font-black text-slate-900 mt-2 tracking-tighter">--</div>
+                    <div class="mt-4 text-xs font-bold text-slate-400">Total papers completed</div>
+                </div>
+                <div class="p-8 bg-slate-50 rounded-[2.5rem] border border-slate-100">
+                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Active Weaknesses</span>
+                    <div id="modal-weakness-count" class="text-5xl font-black text-slate-900 mt-2 tracking-tighter">--</div>
+                    <div class="mt-4 text-xs font-bold text-slate-400">Topics flagged for review</div>
+                </div>
+            </div>
+
+            <div class="space-y-12">
+                <section>
+                    <h3 class="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-6 flex items-center gap-3">
+                        <span class="w-2 h-2 bg-brand-600 rounded-full"></span> Simulation Transcript
+                    </h3>
+                    <div class="bg-slate-50 rounded-[2.5rem] overflow-hidden border border-slate-100">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="text-[9px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100">
+                                    <th class="px-8 py-5">Subject Area</th>
+                                    <th class="px-8 py-5">Performance</th>
+                                    <th class="px-8 py-5">Grade</th>
+                                    <th class="px-8 py-5 text-right">Timestamp</th>
+                                </tr>
+                            </thead>
+                            <tbody id="modal-history-list" class="divide-y divide-slate-100"></tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        function toggleSidebar() { sidebar.classList.toggle('-translate-x-full'); overlay.classList.toggle('hidden'); document.body.classList.toggle('overflow-hidden'); }
+        mobileMenuBtn?.addEventListener('click', toggleSidebar);
+        overlay?.addEventListener('click', toggleSidebar);
+    </script>
+
+    <script type="module">
+        import { db, auth } from "./firebase-config.js";
+        import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+        import { collection, getDocs, doc, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+        let allUsers = [];
+        const modal = document.getElementById('user-modal');
+
+        onAuthStateChanged(auth, (user) => {
+            if (!user || !user.email.endsWith("@admin.orbit.com")) window.location.href = "index.html";
+            else loadUsers();
+        });
+
+        window.handleLogout = async () => { await signOut(auth); window.location.href = "index.html"; };
+
+        async function loadUsers() {
+            const tbody = document.getElementById('user-list');
+            try {
+                const snap = await getDocs(collection(db, "users"));
+                allUsers = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                renderUserTable(allUsers);
+            } catch (e) { tbody.innerHTML = `<tr><td colspan="4" class="py-12 text-center text-rose-500 font-bold">${e.message}</td></tr>`; }
+        }
+
+        function renderUserTable(users) {
+            const tbody = document.getElementById('user-list');
+            tbody.innerHTML = users.length ? "" : '<tr><td colspan="4" class="py-32 text-center text-sm font-bold text-slate-300 italic">No candidates found matching query.</td></tr>';
+            
+            users.forEach(u => {
+                const tr = document.createElement('tr');
+                tr.className = "user-row cursor-pointer";
+                tr.onclick = () => openUserProfile(u);
+                tr.innerHTML = `
+                    <td class="px-8 py-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-11 h-11 bg-brand-50 rounded-2xl flex items-center justify-center font-black text-brand-600 text-sm">
+                                ${u.fullName ? u.fullName.charAt(0).toUpperCase() : '?'}
+                            </div>
+                            <div class="flex flex-col">
+                                <span class="text-sm font-black text-slate-900">${u.fullName || 'Anonymous'}</span>
+                                <span class="text-[10px] font-bold text-slate-400 tracking-wide">${u.email}</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-8 py-6">
+                        <div class="flex flex-wrap gap-1.5">
+                            ${(u.combination || []).map(c => `<span class="px-2.5 py-1 bg-slate-50 border border-slate-100 text-[9px] font-black text-slate-500 uppercase rounded-lg">${c}</span>`).join('')}
+                        </div>
+                    </td>
+                    <td class="px-8 py-6 text-center">
+                        <span class="text-sm font-black ${u.aggregateScore > 75 ? 'text-emerald-500' : 'text-slate-900'}">${u.aggregateScore || '0'}</span>
+                    </td>
+                    <td class="px-8 py-6 text-right">
+                        <button class="px-5 py-2.5 bg-slate-900 text-white rounded-xl font-black text-[10px] uppercase tracking-widest shadow-lg active:scale-95 transition-all">Deep Dive</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        async function openUserProfile(user) {
+            document.getElementById('modal-name').innerText = user.fullName || 'Anonymous Candidate';
+            document.getElementById('modal-email').innerText = user.email;
+            document.getElementById('modal-score').innerText = user.aggregateScore || '0';
+            
+            const tags = document.getElementById('modal-tags');
+            tags.innerHTML = (user.combination || []).map(c => `<span class="px-3 py-1 bg-brand-50 text-brand-600 text-[10px] font-black uppercase rounded-lg tracking-widest">${c}</span>`).join('');
+
+            const historySnap = await getDocs(query(collection(db, "users", user.id, "examHistory"), orderBy("timestamp", "desc"), limit(10)));
+            const weaknessSnap = await getDocs(collection(db, "users", user.id, "weaknessBucket"));
+
+            document.getElementById('modal-exams-count').innerText = historySnap.size;
+            document.getElementById('modal-weakness-count').innerText = weaknessSnap.size;
+
+            const histBody = document.getElementById('modal-history-list');
+            histBody.innerHTML = historySnap.empty ? '<tr><td colspan="4" class="px-8 py-12 text-center text-slate-400 italic">No records in simulation history.</td></tr>' : "";
+            
+            historySnap.forEach(doc => {
+                const h = doc.data();
+                const date = new Date(h.timestamp).toLocaleDateString(undefined, {month:'short', day:'numeric'});
+                histBody.innerHTML += `
+                    <tr class="text-xs font-bold text-slate-700">
+                        <td class="px-8 py-5 uppercase tracking-tight">${h.subject}</td>
+                        <td class="px-8 py-5 font-black text-slate-900">${h.score} / ${h.maxScore}</td>
+                        <td class="px-8 py-5"><span class="px-3 py-1 ${h.grade === 'A' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'} rounded-lg font-black text-[10px]">${h.grade || '--'}</span></td>
+                        <td class="px-8 py-5 text-right text-slate-400 font-medium">${date}</td>
+                    </tr>
+                `;
+            });
+
+            modal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+        }
+
+        window.closeModal = () => { modal.classList.add('hidden'); document.body.classList.remove('overflow-hidden'); };
+        window.handleSearch = () => {
+            const term = document.getElementById('user-search').value.toLowerCase();
+            renderUserTable(allUsers.filter(u => u.fullName?.toLowerCase().includes(term) || u.email?.toLowerCase().includes(term)));
+        };
+    </script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js');
+            });
+        }
+    </script>
+</body>
+</html>

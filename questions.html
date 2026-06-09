@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question Bank | JUPEB Orbit Admin</title>
+    <link rel="manifest" href="/manifest.json">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { 50: '#f0f4ff', 100: '#e0e7ff', 600: '#2546eb', 700: '#1d35d8' },
+                        slate: { 50: '#F8FAFC', 100: '#F1F5F9', 200: '#E2E8F0', 900: '#0F172A' }
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'], display: ['Plus Jakarta Sans', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #F8FAFC; font-family: 'Inter', sans-serif; }
+        .sidebar-item-active { background: #EEF2FF; color: #2546eb; }
+        .katex { font-size: 1.1em; }
+        .glass-modal { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(16px); }
+    </style>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900 antialiased">
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden flex items-center justify-between p-4 bg-white border-b border-slate-200 sticky top-0 z-40">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center text-white font-display font-black italic text-xs">A</div>
+            <span class="font-display font-black text-slate-900 tracking-tight text-sm">Orbit Admin</span>
+        </div>
+        <button id="mobile-menu-btn" class="p-2 text-slate-600 hover:bg-slate-100 rounded-xl transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar Overlay -->
+        <div id="sidebar-overlay" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 hidden lg:hidden transition-opacity duration-300"></div>
+
+        <!-- Sidebar -->
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-slate-100 p-8 flex flex-col shrink-0 transform -translate-x-full transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0">
+            <button id="close-sidebar" class="lg:hidden absolute top-6 right-6 p-2 text-slate-400 hover:text-slate-900">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+
+            <div class="flex items-center gap-3 mb-12 px-2">
+                <div class="w-10 h-10 bg-brand-600 rounded-2xl flex items-center justify-center text-white font-display font-black italic text-xl shadow-lg shadow-brand-100">A</div>
+                <div class="flex flex-col">
+                    <span class="font-display font-black text-slate-900 tracking-tight leading-none text-lg">Orbit</span>
+                    <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">Admin Control</span>
+                </div>
+            </div>
+            
+            <nav class="space-y-1.5 flex-1">
+                <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3.5 text-slate-500 hover:bg-slate-50 hover:text-slate-900 rounded-2xl font-bold text-sm transition-all group">
+                    <svg class="w-5 h-5 opacity-50 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                    Dashboard
+                </a>
+                <a href="questions.html" class="sidebar-item-active flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold text-sm transition-all group">
+                    <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                    Question Bank
+                </a>
+                <a href="uploader.html" class="flex items-center gap-3 px-4 py-3.5 text-slate-500 hover:bg-slate-50 rounded-2xl font-bold text-sm transition-all group">
+                    <svg class="w-5 h-5 opacity-50 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                    Batch Uploader
+                </a>
+                <a href="users.html" class="flex items-center gap-3 px-4 py-3.5 text-slate-500 hover:bg-slate-50 rounded-2xl font-bold text-sm transition-all group">
+                    <svg class="w-5 h-5 opacity-50 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    Candidate Analytics
+                </a>
+                <a href="exam-config.html" class="flex items-center gap-3 px-4 py-3.5 text-slate-500 hover:bg-slate-50 rounded-2xl font-bold text-sm transition-all group">
+                    <svg class="w-5 h-5 opacity-50 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    Exam Configuration
+                </a>
+                <a href="maintenance.html" class="flex items-center gap-3 px-4 py-3.5 text-slate-500 hover:bg-slate-50 rounded-2xl font-bold text-sm transition-all group">
+                    <svg class="w-5 h-5 opacity-50 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    System Maintenance
+                </a>
+            </nav>
+
+            <div class="pt-8 border-t border-slate-100">
+                <button onclick="handleLogout()" class="w-full flex items-center gap-3 px-4 py-3.5 text-rose-500 hover:bg-rose-50 rounded-2xl font-bold text-sm transition-all group">
+                    <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                    Logout Session
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main -->
+        <main class="flex-1 p-6 lg:p-12 w-full overflow-x-hidden">
+            <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-12">
+                <div>
+                    <h1 class="font-display text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">Question Bank</h1>
+                    <p id="stats-counter" class="text-sm font-bold text-slate-400 mt-1 uppercase tracking-widest">Global Repository Manager</p>
+                </div>
+                <button onclick="openModal()" class="w-full sm:w-auto px-8 py-4 bg-brand-600 text-white rounded-2xl font-black text-sm shadow-xl shadow-brand-100 hover:bg-brand-700 transition-all active:scale-95">+ Add New Question</button>
+            </header>
+
+            <!-- Filters & Search -->
+            <div class="bg-white p-6 lg:p-8 rounded-[2.5rem] border border-slate-100 shadow-sm mb-8 space-y-6">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Subject</label>
+                        <select id="filter-subject" onchange="loadYears()" class="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-3.5 text-sm font-bold outline-none focus:ring-2 focus:ring-brand-500 transition-all">
+                            <option value="">Select Subject</option>
+                        </select>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Academic Year</label>
+                        <select id="filter-year" class="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-3.5 text-sm font-bold outline-none focus:ring-2 focus:ring-brand-500 transition-all">
+                            <option value="">Select Year</option>
+                        </select>
+                    </div>
+                    <div class="flex items-end">
+                        <button onclick="loadQuestions()" class="w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-sm hover:bg-brand-600 transition-all shadow-lg active:scale-95">Fetch Repository</button>
+                    </div>
+                </div>
+                
+                <div class="relative">
+                    <input type="text" id="q-search" oninput="handleSearch()" placeholder="Search questions, topics, or keywords..." class="w-full bg-slate-50 border border-slate-100 rounded-2xl pl-12 pr-4 py-4 text-sm font-medium outline-none focus:ring-2 focus:ring-brand-500 transition-all">
+                    <svg class="w-5 h-5 text-slate-400 absolute left-4 top-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left min-w-[800px]">
+                        <thead>
+                            <tr class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] border-b border-slate-50">
+                                <th class="px-8 py-6 w-1/2">Content</th>
+                                <th class="px-8 py-6">Syllabus Context</th>
+                                <th class="px-8 py-6 text-right">Management</th>
+                            </tr>
+                        </thead>
+                        <tbody id="question-list" class="divide-y divide-slate-50">
+                            <tr><td colspan="3" class="py-32 text-center text-sm font-bold text-slate-300 italic">Select subject and year to initialize view...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal -->
+    <div id="q-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-[3rem] p-10 max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-white">
+            <div class="flex justify-between items-center mb-10">
+                <h2 class="text-2xl font-display font-black text-slate-900">Question Editor</h2>
+                <button onclick="closeModal()" class="p-2 text-slate-400 hover:text-slate-900 bg-slate-50 rounded-xl transition-all">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            
+            <form id="add-q-form" class="space-y-6">
+                <div>
+                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Question Body (Markdown & KaTeX)</label>
+                    <textarea id="q-text" required class="w-full bg-slate-50 border border-slate-100 rounded-2xl p-5 text-sm font-medium outline-none focus:ring-2 focus:ring-brand-500 h-40 transition-all" placeholder="Enter question text..."></textarea>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Syllabus Topic</label>
+                        <input id="q-topic" type="text" required class="w-full bg-slate-50 border border-slate-100 rounded-2xl p-4 text-sm font-bold outline-none focus:ring-2 focus:ring-brand-500" placeholder="e.g. Thermodynamics">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Correct Answer Index (0-3)</label>
+                        <input id="q-correct" type="number" min="0" max="3" required class="w-full bg-slate-50 border border-slate-100 rounded-2xl p-4 text-sm font-bold outline-none focus:ring-2 focus:ring-brand-500">
+                    </div>
+                </div>
+
+                <div id="q-options" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" placeholder="Option A" class="w-full bg-slate-50 border border-slate-100 rounded-2xl p-4 text-sm font-bold outline-none focus:ring-2 focus:ring-brand-500" required>
+                    <input type="text" placeholder="Option B" class="w-full bg-slate-50 border border-slate-100 rounded-2xl p-4 text-sm font-bold outline-none focus:ring-2 focus:ring-brand-500" required>
+                    <input type="text" placeholder="Option C" class="w-full bg-slate-50 border border-slate-100 rounded-2xl p-4 text-sm font-bold outline-none focus:ring-2 focus:ring-brand-500" required>
+                    <input type="text" placeholder="Option D" class="w-full bg-slate-50 border border-slate-100 rounded-2xl p-4 text-sm font-bold outline-none focus:ring-2 focus:ring-brand-500" required>
+                </div>
+
+                <div class="pt-6 border-t border-slate-100 space-y-6">
+                    <h3 class="text-xs font-black text-brand-600 uppercase tracking-widest">Explanation & Pedagogy</h3>
+                    <div>
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Core Concept</label>
+                        <input id="q-concept" type="text" class="w-full bg-slate-50 border border-slate-100 rounded-2xl p-4 text-sm font-bold outline-none focus:ring-2 focus:ring-brand-500">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Step-by-Step Breakdown</label>
+                        <textarea id="q-steps" class="w-full bg-slate-50 border border-slate-100 rounded-2xl p-5 text-sm font-medium outline-none focus:ring-2 focus:ring-brand-500 h-32"></textarea>
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-4 mt-10">
+                    <button type="button" onclick="closeModal()" class="px-8 py-4 text-slate-400 hover:text-slate-900 font-bold text-sm">Discard Changes</button>
+                    <button type="submit" class="px-10 py-4 bg-slate-900 text-white rounded-2xl font-black text-sm shadow-xl hover:bg-brand-600 transition-all active:scale-95">Save to Cloud Bank</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const closeSidebarBtn = document.getElementById('close-sidebar');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        function toggleSidebar() { sidebar.classList.toggle('-translate-x-full'); overlay.classList.toggle('hidden'); document.body.classList.toggle('overflow-hidden'); }
+        mobileMenuBtn?.addEventListener('click', toggleSidebar);
+        closeSidebarBtn?.addEventListener('click', toggleSidebar);
+        overlay?.addEventListener('click', toggleSidebar);
+    </script>
+
+    <script type="module">
+        import { db, auth } from "./firebase-config.js";
+        import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+        import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+        const modal = document.getElementById('q-modal');
+        const form = document.getElementById('add-q-form');
+        const tbody = document.getElementById('question-list');
+        const searchInput = document.getElementById('q-search');
+        let editingId = null;
+        let allQuestions = [];
+
+        onAuthStateChanged(auth, (user) => {
+            if (!user || !user.email.endsWith("@admin.orbit.com")) window.location.href = "index.html";
+            else initDynamicFilters();
+        });
+
+        window.handleLogout = async () => { await signOut(auth); window.location.href = "index.html"; };
+
+        const SUBJECTS = [
+            {id:"physics", label:"Physics"},
+            {id:"mathematics", label:"Mathematics"},
+            {id:"chemistry", label:"Chemistry"},
+            {id:"biology", label:"Biology"},
+            {id:"agricultural-science", label:"Agricultural Science"},
+            {id:"economics", label:"Economics"},
+            {id:"government", label:"Government"},
+            {id:"geography", label:"Geography"},
+            {id:"business-studies", label:"Business Studies"},
+            {id:"accounting", label:"Accounting"},
+            {id:"literature-in-english", label:"Literature in English"},
+            {id:"crs", label:"CRS"},
+            {id:"irs", label:"IRS"},
+            {id:"history", label:"History"},
+            {id:"french", label:"French"},
+            {id:"yoruba", label:"Yoruba"},
+            {id:"igbo", label:"Igbo"},
+            {id:"hausa", label:"Hausa"},
+            {id:"music", label:"Music"},
+            {id:"visual-arts", label:"Visual Arts"}
+        ];
+        async function initDynamicFilters() {
+            const select = document.getElementById('filter-subject');
+            select.innerHTML = '<option value="">Select Subject</option>' + SUBJECTS.map(s => `<option value="${s.id}">${s.label}</option>`).join('');
+        }
+
+        window.loadYears = async function() {
+            const sub = document.getElementById('filter-subject').value;
+            const select = document.getElementById('filter-year');
+            if(!sub) {
+                select.innerHTML = '<option value="">Select Subject First</option>';
+                return;
+            }
+            select.innerHTML = '<option value="">Scanning database...</option>';
+            try {
+                const yearsRef = collection(db, "subjects", sub, "years");
+                const snap = await getDocs(yearsRef);
+                
+                if (snap.empty) {
+                    select.innerHTML = '<option value="">No years found</option><option value="manual">-- Manual Entry --</option>';
+                } else {
+                    select.innerHTML = '<option value="">Select Year</option>' + 
+                        snap.docs.map(d => `<option value="${d.id}">${d.id}</option>`).sort((a,b) => b-a).join('') + 
+                        '<option value="manual">-- Manual Entry --</option>';
+                }
+            } catch (e) {
+                console.error("Critical error scanning years:", e);
+                select.innerHTML = '<option value="">Error scanning</option>';
+                alert("Failed to scan years. Check console.");
+            }
+        };
+
+        window.loadQuestions = async function() {
+            const sub = document.getElementById('filter-subject').value;
+            const year = document.getElementById('filter-year').value;
+            if(!sub || !year) return;
+            tbody.innerHTML = '<tr><td colspan="3" class="py-32 text-center text-sm font-bold text-slate-400 animate-pulse">Syncing with Repository...</td></tr>';
+            const snap = await getDocs(collection(db, "subjects", sub, "years", year, "questions"));
+            allQuestions = snap.docs.map(d => ({id: d.id, ...d.data()}));
+            renderTable(allQuestions);
+        };
+
+        function renderTable(data) {
+            tbody.innerHTML = data.length ? "" : '<tr><td colspan="3" class="py-32 text-center text-sm font-bold text-slate-300 italic">No records found.</td></tr>';
+            data.forEach(q => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50/50 transition-colors";
+                tr.innerHTML = `
+                    <td class="px-8 py-8"><div class="text-sm font-medium leading-relaxed max-w-2xl text-slate-700">${q.questionText}</div></td>
+                    <td class="px-8 py-8"><span class="px-3 py-1.5 bg-brand-50 text-brand-600 rounded-lg text-[10px] font-black uppercase tracking-widest border border-brand-100">${q.syllabusTopic || 'General'}</span></td>
+                    <td class="px-8 py-8 text-right whitespace-nowrap">
+                        <button class="edit-btn px-4 py-2 text-brand-600 hover:bg-brand-50 rounded-xl font-bold text-xs transition-all mr-2">Edit</button>
+                        <button class="delete-btn px-4 py-2 text-rose-500 hover:bg-rose-50 rounded-xl font-bold text-xs transition-all">Delete</button>
+                    </td>
+                `;
+                tr.querySelector('.edit-btn').onclick = () => openModal(q, q.id);
+                tr.querySelector('.delete-btn').onclick = () => deleteQuestion(q.id);
+                tbody.appendChild(tr);
+            });
+            if(window.renderMathInElement) renderMathInElement(tbody);
+        }
+
+        window.openModal = (q=null, id=null) => {
+            editingId = id;
+            if(q) {
+                document.getElementById('q-text').value = q.questionText;
+                document.getElementById('q-topic').value = q.syllabusTopic;
+                document.getElementById('q-correct').value = q.correctAnswerIndex;
+                document.getElementById('q-concept').value = q.explanation?.coreConcept || "";
+                document.getElementById('q-steps').value = q.explanation?.steps || "";
+                const opts = document.querySelectorAll('#q-options input');
+                (q.options || []).forEach((o, i) => opts[i] && (opts[i].value = o));
+            } else form.reset();
+            modal.classList.remove('hidden');
+        };
+
+        window.closeModal = () => { modal.classList.add('hidden'); form.reset(); };
+
+        window.handleSearch = () => {
+            const term = searchInput.value.toLowerCase();
+            renderTable(allQuestions.filter(q => (q.questionText||"").toLowerCase().includes(term) || (q.syllabusTopic||"").toLowerCase().includes(term)));
+        };
+
+        window.deleteQuestion = async (id) => {
+            if(!confirm("Permanent delete?")) return;
+            const sub = document.getElementById('filter-subject').value;
+            const year = document.getElementById('filter-year').value;
+            await deleteDoc(doc(db, "subjects", sub, "years", year, "questions", id));
+            loadQuestions();
+        };
+
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+            const sub = document.getElementById('filter-subject').value;
+            const year = document.getElementById('filter-year').value;
+            const data = {
+                questionText: document.getElementById('q-text').value,
+                syllabusTopic: document.getElementById('q-topic').value,
+                correctAnswerIndex: parseInt(document.getElementById('q-correct').value),
+                explanation: { coreConcept: document.getElementById('q-concept').value, steps: document.getElementById('q-steps').value },
+                options: Array.from(document.querySelectorAll('#q-options input')).map(i => i.value),
+                updatedAt: new Date().toISOString()
+            };
+            const ref = collection(db, "subjects", sub, "years", year, "questions");
+            if(editingId) await updateDoc(doc(ref, editingId), data);
+            else await addDoc(ref, data);
+            closeModal(); loadQuestions();
+        };
+    </script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js');
+            });
+        }
+    </script>
+</body>
+</html>
